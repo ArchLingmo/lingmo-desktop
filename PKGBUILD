@@ -13,7 +13,7 @@ depends=(
     # Session, shell and window manager integration
     'lingmo-core' 'lingmo-statusbar' 'lingmo-dock' 'lingmo-launcher'
     'lingmo-filemanager' 'lingmo-settings' 'lingmo-spotlight' 'lingmo-kwin-plugins'
-    # Look and feel
+    # Look and feel (lingmo-systemicons: the Lingmo icon theme, which pulls WhiteSur)
     'lingmo-systemicons' 'lingmo-artwork' 'lingmo-wallpapers'
     'lingmo-cursor-themes' 'lingmo-gtk-themes'
     # Login screen and display server
