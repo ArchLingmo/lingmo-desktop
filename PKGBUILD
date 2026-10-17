@@ -23,7 +23,9 @@ depends=(
     # Apps
     'lingmo-terminal' 'lingmo-texteditor' 'lingmo-calculator'
     'lingmo-screenshots' 'lingmo-screenlocker' 'lingmo-videoplayer'
-    'lingmo-updater' 'lingmo-welcome'
+    'lingmo-updater' 'lingmo-welcome' 'lingmo-store' 'lingmo-winrun'
+    'lingmo-clock' 'lingmo-widgets' 'lingmo-optimizer' 'lingmo-imagewriter'
+    'lingmo-automator' 'lingmo-mail' 'lingmo-assistant' 'lingmo-photos' 'lingmo-reader'
 )
 optdepends=(
     'konsole: KDE terminal'
@@ -32,3 +34,49 @@ optdepends=(
     'bluez: Bluetooth settings'
     'lingmo-camera: auto framing for video calls (Settings > Camera)'
 )
+
+# Lingmo's default apps per file type (owned here, not by any single app)
+package() {
+    install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/lingmo-mimeapps.list" <<'EOF'
+# Default applications for Lingmo sessions (XDG_CURRENT_DESKTOP=Lingmo),
+# read by xdg-open, GIO and KService after ~/.config/mimeapps.list:
+# the user's own choices always win.
+[Default Applications]
+# Programs and installers from outside the Arch repositories: isolated boxes
+application/x-ms-dos-executable=lingmo-winrun.desktop
+application/x-msdownload=lingmo-winrun.desktop
+application/x-dosexec=lingmo-winrun.desktop
+application/vnd.microsoft.portable-executable=lingmo-winrun.desktop
+application/x-ms-ne-executable=lingmo-winrun.desktop
+application/x-msi=lingmo-winrun.desktop
+application/x-ms-shortcut=lingmo-winrun.desktop
+application/vnd.debian.binary-package=lingmo-winrun.desktop
+application/x-rpm=lingmo-winrun.desktop
+application/vnd.appimage=lingmo-winrun.desktop
+application/x-iso9660-appimage=lingmo-winrun.desktop
+application/vnd.android.package-archive=lingmo-winrun.desktop
+# Pictures
+image/jpeg=lingmo-photos.desktop
+image/pjpeg=lingmo-photos.desktop
+image/png=lingmo-photos.desktop
+image/apng=lingmo-photos.desktop
+image/webp=lingmo-photos.desktop
+image/gif=lingmo-photos.desktop
+image/bmp=lingmo-photos.desktop
+image/x-bmp=lingmo-photos.desktop
+image/x-ms-bmp=lingmo-photos.desktop
+image/tiff=lingmo-photos.desktop
+image/avif=lingmo-photos.desktop
+image/heic=lingmo-photos.desktop
+image/heif=lingmo-photos.desktop
+image/jxl=lingmo-photos.desktop
+image/svg+xml=lingmo-photos.desktop
+image/svg+xml-compressed=lingmo-photos.desktop
+image/x-tga=lingmo-photos.desktop
+image/x-portable-pixmap=lingmo-photos.desktop
+image/qoi=lingmo-photos.desktop
+# Documents
+application/pdf=lingmo-reader.desktop
+application/x-pdf=lingmo-reader.desktop
+EOF
+}
