@@ -26,17 +26,38 @@ depends=(
     'lingmo-updater' 'lingmo-welcome' 'lingmo-store' 'lingmo-winrun'
     'lingmo-clock' 'lingmo-widgets' 'lingmo-optimizer' 'lingmo-imagewriter'
     'lingmo-automator' 'lingmo-mail' 'lingmo-assistant' 'lingmo-photos' 'lingmo-reader'
+    # Virtual camera with auto framing, background blur and face unlock (pulls
+    # v4l2loopback-dkms + linux-headers to build the module: ~68 MiB download)
+    'lingmo-camera'
+    # Video editor (pulls mlt, frei0r-plugins, vid.stab: ~15 MiB installed)
+    'lingmo-studio'
+    # Keyboard and mouse shared between PCs (pulls deskflow: ~5 MiB installed)
+    'lingmo-continuity'
+    # Phone and devices (pulls kdeconnect: ~27 MiB installed, ~6.5 MiB download)
+    'lingmo-share'
 )
 optdepends=(
     'konsole: KDE terminal'
     'flameshot: screenshots (bind it to Print in Settings > Shortcuts)'
     'networkmanager: network and VPN in the status bar'
     'bluez: Bluetooth settings'
-    'lingmo-camera: auto framing for video calls (Settings > Camera)'
 )
 
 # Lingmo's default apps per file type (owned here, not by any single app)
 package() {
+    install -Dm644 /dev/stdin "$pkgdir/etc/lingmo-release" <<'EOF'
+NAME="ArchLingmo"
+VERSION="2026.11"
+PRETTY_NAME="ArchLingmo Silício"
+VERSION_CODENAME=silicon
+CODENAME_PRETTY="Silício"
+CODENAME_PT="Silício"
+CODENAME_EN="Silicon"
+ELEMENT_SYMBOL=Si
+ELEMENT_NUMBER=14
+HOME_URL="https://devalexandre.github.io/archlingmo/"
+BLOG_URL="https://devalexandre.github.io/archlingmo/#/blog/silicio"
+EOF
     install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/lingmo-mimeapps.list" <<'EOF'
 # Default applications for Lingmo sessions (XDG_CURRENT_DESKTOP=Lingmo),
 # read by xdg-open, GIO and KService after ~/.config/mimeapps.list:
