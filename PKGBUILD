@@ -10,6 +10,8 @@ license=('GPL-3.0-or-later')
 depends=(
     # Libraries and platform integration
     'LingmoUI' 'liblingmo' 'lingmo-qt-plugins'
+    # App actions shared by the apps, the Assistant, Flows and Spotlight (Lingmo Intents: ~0.8 MiB installed)
+    'lingmo-intents'
     # Session, shell and window manager integration
     'lingmo-core' 'lingmo-statusbar' 'lingmo-dock' 'lingmo-launcher'
     'lingmo-filemanager' 'lingmo-settings' 'lingmo-spotlight' 'lingmo-kwin-plugins'
