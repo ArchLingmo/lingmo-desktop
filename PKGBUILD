@@ -37,6 +37,9 @@ depends=(
     'lingmo-continuity'
     # Phone and devices (pulls kdeconnect: ~27 MiB installed, ~6.5 MiB download)
     'lingmo-share'
+    # Compressed swap in RAM: keeps the desktop alive when AI models or the Studio fill the
+    # memory (Lingmo ships the config below)
+    'zram-generator'
 )
 optdepends=(
     'konsole: KDE terminal'
@@ -47,6 +50,21 @@ optdepends=(
 
 # Lingmo's default apps per file type (owned here, not by any single app)
 package() {
+    # zram swap for every Lingmo system: half the RAM (at most 8 GiB), zstd. An admin's
+    # /etc/systemd/zram-generator.conf overrides it.
+    install -Dm644 /dev/stdin "$pkgdir/usr/lib/systemd/zram-generator.conf" <<'EOF'
+[zram0]
+zram-size = min(ram / 2, 8192)
+compression-algorithm = zstd
+swap-priority = 100
+EOF
+    # Kernel settings for swap on zram (the ArchWiki/Pop!_OS values)
+    install -Dm644 /dev/stdin "$pkgdir/usr/lib/sysctl.d/99-lingmo-zram.conf" <<'EOF'
+vm.swappiness = 180
+vm.watermark_boost_factor = 0
+vm.watermark_scale_factor = 125
+vm.page-cluster = 0
+EOF
     install -Dm644 /dev/stdin "$pkgdir/etc/lingmo-release" <<'EOF'
 NAME="ArchLingmo"
 VERSION="2026.11"
