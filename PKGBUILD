@@ -41,6 +41,10 @@ depends=(
     # memory (Lingmo ships the config below)
     'zram-generator'
 )
+# The [archlingmo] servers in a mirror list of their own: the repo moves to the ArchLingmo
+# organisation and systems installed earlier switch to it here (lingmo-desktop.install)
+backup=('etc/pacman.d/archlingmo-mirrorlist')
+install=lingmo-desktop.install
 optdepends=(
     'konsole: KDE terminal'
     'flameshot: screenshots (bind it to Print in Settings > Shortcuts)'
@@ -50,6 +54,12 @@ optdepends=(
 
 # Lingmo's default apps per file type (owned here, not by any single app)
 package() {
+    # New home first; the old address stays as a fallback while both are published
+    install -Dm644 /dev/stdin "$pkgdir/etc/pacman.d/archlingmo-mirrorlist" <<'EOF'
+# ArchLingmo package servers ([archlingmo] in /etc/pacman.conf includes this file)
+Server = https://archlingmo.github.io/archlingmo-repo/$arch
+Server = https://devalexandre.github.io/archlingmo-repo/$arch
+EOF
     # zram swap for every Lingmo system: half the RAM (at most 8 GiB), zstd. An admin's
     # /etc/systemd/zram-generator.conf overrides it.
     install -Dm644 /dev/stdin "$pkgdir/usr/lib/systemd/zram-generator.conf" <<'EOF'

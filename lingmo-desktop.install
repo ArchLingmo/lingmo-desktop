@@ -1,0 +1,24 @@
+# Systems installed before the repo moved to the ArchLingmo organisation have the old
+# server written in /etc/pacman.conf: point [archlingmo] at the mirror list instead,
+# once, keeping any other line of that section.
+_use_mirrorlist() {
+    local conf=/etc/pacman.conf
+    grep -q '^\[archlingmo\]' "$conf" || return 0
+    # already done (or written by hand)
+    awk '/^\[/{s=($0=="[archlingmo]")} s && /^Include *= *\/etc\/pacman.d\/archlingmo-mirrorlist/{f=1} END{exit !f}' "$conf" && return 0
+    cp -a "$conf" "$conf.lingmo-bak"
+    awk '
+        /^\[/ { in_s = ($0 == "[archlingmo]"); print; if (in_s) print "Include = /etc/pacman.d/archlingmo-mirrorlist"; next }
+        in_s && /^Server *= *https:\/\/devalexandre\.github\.io\/archlingmo-repo/ { next }
+        { print }
+    ' "$conf.lingmo-bak" > "$conf"
+    echo ":: [archlingmo] now uses /etc/pacman.d/archlingmo-mirrorlist (backup: $conf.lingmo-bak)"
+}
+
+post_install() {
+    _use_mirrorlist
+}
+
+post_upgrade() {
+    _use_mirrorlist
+}
