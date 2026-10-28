@@ -5,7 +5,7 @@ pkgver=1.3.1
 pkgrel=1
 pkgdesc="Lingmo desktop environment (Qt 6): session, shell, apps, themes and login screen"
 arch=('any')
-url="https://github.com/devalexandre/lingmo-desktop"
+url="https://github.com/ArchLingmo/lingmo-desktop"
 license=('GPL-3.0-or-later')
 depends=(
     # Libraries and platform integration
@@ -40,6 +40,22 @@ depends=(
     # Compressed swap in RAM: keeps the desktop alive when AI models or the Studio fill the
     # memory (Lingmo ships the config below)
     'zram-generator'
+    # Podcast dubbing with each speaker's voice (~1 MiB; the voice engine installs on first use)
+    'lingmo-podcast'
+    # Live translation: subtitles, dubbed listening, translator microphone (~1 MiB installed;
+    # whisper-cpp/espeak-ng already come with lingmo-assistant; models download on first use)
+    'lingmo-translate'
+    # Voice Studio: voices, reading aloud (the Reader's "Ouvir"), language learning and
+    # dictation in any app with Meta+H (~2 MiB installed; piper-tts/espeak-ng/whisper-cpp
+    # already come with the Assistant and live translation; models download on first use)
+    'lingmo-voicestudio'
+    # Tutor for children: ask by voice, text, photo or PDF; math checked by SymPy; parents' PIN (~1 MiB;
+    # python-sympy + mpmath ~110 MiB; tesseract/whisper-cpp/espeak-ng already come with other apps)
+    'lingmo-tutor'
+    # Ações de arquivo: convert by dragging a file and tapping Shift/Ctrl/Alt (FileAction, MIT). The engine is
+    # ~74 MiB installed (ImageMagick, PDFium, Skia bundled) + Arch's dotnet-runtime ~74 MiB; ffmpeg already comes
+    # with other apps. Pandoc/LibreOffice stay optional (their slices show as "precisa de …")
+    'lingmo-fileaction' 'lingmo-fileaction-engine' 'dotnet-runtime' 'ffmpeg'
 )
 # The [archlingmo] servers in a mirror list of their own: the repo moves to the ArchLingmo
 # organisation and systems installed earlier switch to it here (lingmo-desktop.install)
@@ -85,8 +101,8 @@ CODENAME_PT="Silício"
 CODENAME_EN="Silicon"
 ELEMENT_SYMBOL=Si
 ELEMENT_NUMBER=14
-HOME_URL="https://devalexandre.github.io/archlingmo/"
-BLOG_URL="https://devalexandre.github.io/archlingmo/#/blog/silicio"
+HOME_URL="https://archlingmo.github.io/"
+BLOG_URL="https://archlingmo.github.io/#/blog/silicio"
 EOF
     install -Dm644 /dev/stdin "$pkgdir/usr/share/applications/lingmo-mimeapps.list" <<'EOF'
 # Default applications for Lingmo sessions (XDG_CURRENT_DESKTOP=Lingmo),
@@ -126,6 +142,21 @@ image/svg+xml-compressed=lingmo-photos.desktop
 image/x-tga=lingmo-photos.desktop
 image/x-portable-pixmap=lingmo-photos.desktop
 image/qoi=lingmo-photos.desktop
+# Music and podcasts: the player (Dublador de Podcasts is only offered in "Abrir com")
+audio/mpeg=lingmo-videoplayer.desktop
+audio/mp4=lingmo-videoplayer.desktop
+audio/x-m4a=lingmo-videoplayer.desktop
+audio/aac=lingmo-videoplayer.desktop
+audio/ogg=lingmo-videoplayer.desktop
+audio/x-vorbis+ogg=lingmo-videoplayer.desktop
+audio/opus=lingmo-videoplayer.desktop
+audio/flac=lingmo-videoplayer.desktop
+audio/wav=lingmo-videoplayer.desktop
+audio/x-wav=lingmo-videoplayer.desktop
+audio/webm=lingmo-videoplayer.desktop
+audio/x-matroska=lingmo-videoplayer.desktop
+audio/x-ms-wma=lingmo-videoplayer.desktop
+audio/x-aiff=lingmo-videoplayer.desktop
 # Documents
 application/pdf=lingmo-reader.desktop
 application/x-pdf=lingmo-reader.desktop
